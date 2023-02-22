@@ -9,22 +9,16 @@ import user from './images/avatar.png'
 import camera from './images/camera.png'
 import { Link, useLocation } from 'react-router-dom';
 import "./g.css"
+import { useSelector,useDispatch } from 'react-redux';
+import { set } from './action/action';
 function Genralinfo() {
-    const [gn, setgn] = useState("")
-    const [op, setop] = useState({
-        namei: "",
-        mobile: null,
-        postedby: "",
-        saletype: "",
-        featuredpackage: "",
-        ppdpackage: "",
-        image: null
+    const store=useSelector((st)=>{
+        return st.redu
     })
-    const location = useLocation();
-    console.log(location)
+    const dispatch=useDispatch()
+   
     useEffect(() => {
-        setop({ ...op, ...location.state })
-        setgn(location.state.name)
+        
     }, [])
     return (
         <div className='homepagek'>
@@ -45,7 +39,7 @@ function Genralinfo() {
                     <div className='userk'>
                         <img src={user} alt="7" />
                         <select>
-                            <option selected>{gn}</option>
+                            <option selected>{store.data.name}</option>
                             <option>Log out</option>
                         </select>
                     </div>
@@ -73,33 +67,39 @@ function Genralinfo() {
                 <div className='kkk'>
                     <div className='tablek'>
                         <label className='p1k'>Name</label>
-                        <select className='g1k' onChange={(e) => { setop({ ...op, namei: e.target.value }) }}>
+                        <select className='g1k' name='namei' onChange={(e) => {  const {name,value}=e.target;
+                            dispatch(set(name,value)) }}>
                             <option selected>Owner</option>
                             <option >broker</option>
                             <option>agent</option>
                         </select>
                         <label className='p2k'>Mobile</label>
-                        <input className='g2k' placeholder='Enter mobile number' onChange={(e) => { setop({ ...op, mobile: e.target.value }) }}></input>
+                        <input className='g2k' placeholder='Enter mobile number' name='mobile' onChange={(e) => {  const {name,value}=e.target;
+                            dispatch(set(name,value)) }}></input>
                         <label className='p3k'>Posted by</label>
-                        <select className='g3k' onChange={(e) => { setop({ ...op, postedby: e.target.value }) }}>
+                        <select className='g3k' name='postedby'  onChange={(e) => {  const {name,value}=e.target;
+                            dispatch(set(name,value)) }}>
                             <option >Posted By</option>
                             <option >owner</option>
                             <option >agent</option>
                         </select>
                         <label className='p4k'>Sale Type</label>
-                        <select className='g4k' placeholder='Please select' onChange={(e) => { setop({ ...op, saletype: e.target.value }) }}>
+                        <select className='g4k' placeholder='Please select' name='saletype' onChange={(e) => {  const {name,value}=e.target;
+                            dispatch(set(name,value))}}>
                             <option >please select</option>
                             <option >Standard sale</option>
                             <option >Bank Owned sales</option>
                         </select>
                         <label className='p5k'>Featured Package</label>
-                        <select className='g5k' onChange={(e) => { setop({ ...op, featuredpackage: e.target.value }) }}>
+                        <select className='g5k' name='featuredpackage' onChange={(e) => {  const {name,value}=e.target;
+                            dispatch(set(name,value)) }}>
                             <option >please select</option>
                             <option >yes</option>
                             <option >no</option>
                         </select>
                         <label className='p6k'>PPD package</label>
-                        <select className='g6k' onChange={(e) => { setop({ ...op, ppdpackage: e.target.value }) }} >
+                        <select className='g6k' name='ppdpackage' onChange={(e) => {  const {name,value}=e.target;
+                            dispatch(set(name,value)) }} >
                             <option selected>Select property type</option>
                             <option >yes</option>
                             <option >no</option>
@@ -109,12 +109,13 @@ function Genralinfo() {
                                 <label htmlFor='file'>
                                     <img src={camera} alt='cam' />
                                 </label>
-                                <input id="file" type="file" onChange={(e) => { setop({ ...op, image: e.target.files[0] }) }} />
+                                <input id="file" type="file" name='image' onChange={(e) => {  const {name,value}=e.target;
+                            dispatch(set(name,e.target.files[0])) }} />
                             </div>
                         </div>
                         <div className='add'>Add Photo</div>
-                        <Link to="/property" state={op}>  <button className='prev'><span id='previous'>Previous</span></button></Link>
-                        <Link to="/locationinfo" state={op}><button className='save'><span id='cont'>Save & Continue</span></button></Link>
+                        <Link to="/property">  <button className='prev'><span id='previous'>Previous</span></button></Link>
+                        <Link to="/locationinfo" ><button className='save'><span id='cont'>Save & Continue</span></button></Link>
                     </div>
                 </div>
             </div>

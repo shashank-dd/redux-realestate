@@ -14,32 +14,38 @@ import user from './images/avatar.png'
 import search from './images/search.png'
 import plus from './images/plus.png'
 import axios from "axios";
+import {useSelector,useDispatch} from "react-redux";
+import { array, name} from './action/action';
+import { fil,fily } from './action/action';
 function HomePage() {
-    
-    const [dta,setdta]=useState([])
-    const [ta,setta]=useState([])
-    const[name,setname]=useState("")
-    const[gl,setgl]=useState("")
+    const dispatch=useDispatch()
+    const store=useSelector((state)=>{
+        return state.redu
+    })
+   
    
     let navigate = useNavigate()
 useEffect(()=>{
+    console.log(store,"store")
     axios.post("https://backendreal.onrender.com/data/data",{token:window.localStorage.getItem("token")}).then(response =>{
        console.log(response.data.dat)
-        setdta(response.data.dat)
-        console.log("dta",dta)
-        setname(response.data.user)
-        setgl(response.data.userid)
-        setta(response.data.dat)
+        
+        dispatch(array(response.data.dat))
+        
+        dispatch(name(response.data.user))
+        
+       
 }).catch(error =>{console.log(error)})
+
    },[])
 const onchangehandler =(e)=>{
     if(e.target.value === ""){
-        setta(dta)
+        dispatch(fil())
     
         return
     }
-   const search =  dta.filter(item=>item.PPDID.toLocaleLowerCase().includes(e.target.value.toLocaleLowerCase()))
-   setta(search)
+   const search =  store.array.filter(item=>item.PPDID.toLocaleLowerCase().includes(e.target.value.toLocaleLowerCase()))
+   dispatch(fily(search))
   }
  let logoutHandler = () =>{
     console.log(1)
@@ -62,11 +68,11 @@ return (
             </div>
             <div className='div2'>
                 <div className='header'>
-                    <div className='userid'><p>{gl}</p></div>
+                    <div className='userid'><p>{store.data.name}</p></div>
                     <div className='user'>
                         <img src={user} alt="7" />
                         <select onChange={logoutHandler}>
-                            <option selected>{name}</option>
+                            <option selected>{store.data.name}</option>
                             <option>Logout</option>
                            
                         </select>
@@ -81,7 +87,7 @@ return (
                         </div>
                     <div className='property'>
                         <img src={plus} alt="" />
-                        <Link to="/basicinfo" state={{ name: name }}><span>Add Property</span></Link>
+                        <Link to="/basicinfo" ><span>Add Property</span></Link>
                     </div>
                 </div>
               <div>
@@ -100,7 +106,7 @@ return (
                             </th>
                         </thead>
                         <div className='mml'>
-                            {ta&& ta.map((obj,index)=>{
+                            {store.filter&& store.filter.map((obj,index)=>{
                                 return  <div className='jml' key={index}>
                                  <div className='fk'>{obj.PPDID}</div>
                                 <div className='fk'><img id='gal' src={gallery} alt="gal"/></div>

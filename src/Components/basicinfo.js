@@ -8,20 +8,14 @@ import tag from './images/tag.png'
 import user from './images/avatar.png'
 import "./basicinfo.css"
 import { Link, useLocation } from 'react-router-dom';
+import { useSelector,useDispatch } from 'react-redux';
+import { set } from './action/action';
 function Basicinfo() {
-   const location =useLocation()
-   const [form,setform]=useState({
-        name :    location.state.name   ,
-        propertytype :           "",
-        negotable:         "",
-        price:        null,
-        ownership:         "",
-        propertyage:         null,
-        propertyapproved:         "",
-        propertydescription:         "",
-        bankloan:          "",
-        
-      })
+    const store=useSelector((st)=>{
+        return st.redu
+    })
+    const dispatch=useDispatch()
+
  return (
         <div className='homepage'>
             <div className='div1'>
@@ -41,7 +35,7 @@ function Basicinfo() {
                     <div className='user'>
                         <img src={user} alt="7" />
                         <select>
-                            <option selected>{form.name}</option>
+                            <option selected>{store.data.name}</option>
                             <option>Log out</option>
                         </select>
                     </div>
@@ -69,51 +63,74 @@ function Basicinfo() {
                 <div className='kk'>
                     <div className='table'>
             <label className='p1'>Property type</label>
-                    <select className='g1' onChange={(e)=>{
-                             console.log(e.target.value)
-                            setform({...form,propertytype:e.target.value})}}>
+                    <select className='g1' name='propertytype' onChange={(e)=>{
+                            const {name,value}=e.target;
+                            console.log(name,value,e.target,e.target,e.target.name)
+                            dispatch(set(name,value))
+                            console.log(store.data)
+
+                          }}
+
+                            >
                             <option selected>Select property type</option>
-                            <option >Land</option>
+                            <option  >Land</option>
                             <option >Residential.</option>
                             <option >Commercial.</option>
                             <option >Industrial</option>
                      </select>
                       <label className='p2'>Negotable</label>
-                       <select className='g2' onChange={(e)=>{setform({...form,negotable:e.target.value})}} >
+                       <select className='g2' name='negotable'
+                        onChange={(e)=>{
+                            const {name,value}=e.target;
+                            console.log(name,value)
+                            dispatch(set(name,value))
+                            console.log(store.data)
+                        }} 
+                        >
                             <option selected>Select Negotable</option>
                             <option >yes</option>
                             <option >no</option>
                        </select>
                        <label className='p3'>Price</label>
-                        <input className='g3' placeholder='Example: 10000'  onChange={(e)=>{setform({...form,price:e.target.value})}}></input>
+                        <input className='g3' placeholder='Example: 10000' name='price'  onChange={(e)=>{ const {name,value}=e.target;
+                        console.log(name,value)
+                            dispatch(set(name,value))
+                            console.log(store.data)}}></input>
                         <label className='p4'> Ownership</label>
-                        <select className='g4' onChange={(e)=>{setform({...form,ownership:e.target.value})}} >
+                        <select className='g4' name='ownership' onChange={(e)=>{ const {name,value}=e.target;
+                            dispatch(set(name,value))}} >
                             <option selected>Select ownership</option>
                             <option >individual  ownership</option>
                             <option >joined  couples</option>
                        </select>
                         <label className='p5'>Property age</label>
-                       <select className='g5' onChange={(e)=>{setform({...form,propertyage:e.target.value})}} >
+                       <select className='g5'name='propertyage' onChange={(e)=>{ const {name,value}=e.target;
+                            dispatch(set(name,value))}} >
                             <option selected>Select property age</option>
                             <option >5</option>
                             <option >10</option>
                        </select>
                         <label className='p6'>Propert approved</label>
-                       <select className='g6' onChange={(e)=>{setform({...form,propertyapproved:e.target.value})}} >
+                       <select className='g6' name='propertyapproved' onChange={(e)=>{ const {name,value}=e.target;
+                            dispatch(set(name,value))}} >
                             <option selected>Select property approved</option>
                             <option >yes</option>
                             <option >no</option>
                        </select>
                         <label className='p7'>Property description</label>
-                        <input className='g7' onChange={(e)=>{setform({...form,propertydescription:e.target.value})}} ></input>
+                        <input className='g7' name='propertydescription' onChange={(e)=>{ const {name,value}=e.target;
+                            dispatch(set(name,value))}} ></input>
                         <label className='p8'>Bank loan </label>
-                         <select className='g8'  onChange={(e)=>{setform({...form,bankloan:e.target.value})}} >
+                         <select className='g8' name='bankloan' onChange={(e)=>{ const {name,value}=e.target;
+                            dispatch(set(name,value))
+                            console.log(store.data)
+                            }} >
                             <option selected>bank loan </option>
                             <option >Loan against residential or commercial property</option>
                             <option >against property for self-employed</option>
                         </select>
                   <Link to="/homepage"><button id='opgg'>cancel</button></Link>    
-                  <Link to="/property" state={form}> <button id='ophgg'  >save & continue</button> </Link> 
+                  <Link to="/property" > <button id='ophgg'  >save & continue</button> </Link> 
                      </div>
                 </div>
              </div>
